@@ -110,9 +110,8 @@ $I18N = @{
         TreeNotices = "├── [TERCEROS]   legal/THIRD_PARTY_NOTICES.md (atribuciones Go/npm)"
         TreeDonate = "├── [APOYO]      legal/DONATE.md (canales de donacion)"
         TreeUninst = "└── [CONTROL]    uninstall.ps1 (desinstalador local)"
-        DonateHeader = "☕ APOYA EL DESARROLLO INDEPENDIENTE (DONACIONES):"
-        DonateKofi = "• Ko-fi direct : https://ko-fi.com/dorado44"
-        DonateUSDC = "• USDC / Crypto: Consulta direcciones en '$InstallDir\legal\DONATE.md'"
+        DonateHeader = "☕ APOYA EL DESARROLLO INDEPENDIENTE (KO-FI):"
+        DonateKofi = "• Ko-fi : https://ko-fi.com/dorado44"
         TipsHeader = "CONSEJOS OPERATIVOS Y AVISOS DE SEGURIDAD (IA):"
         Tip1 = "[Supervision de IA] Goulm utiliza modelos LLM avanzados. Revisa siempre los comandos antes de aprobar mutaciones o commits en tu codigo."
         Tip2 = "[Credenciales] Tus API keys se almacenan cifradas localmente con AES-256-GCM / DPAPI. Nunca se envian a servidores de LRGolden."
@@ -179,9 +178,8 @@ $I18N = @{
         TreeNotices = "├── [NOTICES]    legal/THIRD_PARTY_NOTICES.md (Go/npm attributions)"
         TreeDonate = "├── [SUPPORT]    legal/DONATE.md (donation channels)"
         TreeUninst = "└── [CONTROL]    uninstall.ps1 (local uninstaller)"
-        DonateHeader = "☕ SUPPORT INDEPENDENT DEVELOPMENT (DONATIONS):"
-        DonateKofi = "• Ko-fi direct : https://ko-fi.com/dorado44"
-        DonateUSDC = "• USDC / Crypto: See wallet addresses in '$InstallDir\legal\DONATE.md'"
+        DonateHeader = "☕ SUPPORT INDEPENDENT DEVELOPMENT (KO-FI):"
+        DonateKofi = "• Ko-fi : https://ko-fi.com/dorado44"
         TipsHeader = "OPERATIONAL TIPS & AI SAFETY GUIDELINES:"
         Tip1 = "[AI Supervision] Goulm uses advanced LLMs. Always inspect suggested commands before approving mutations or commits."
         Tip2 = "[Security] Your API keys are encrypted locally using AES-256-GCM / DPAPI. Never sent to LRGolden servers."
@@ -248,9 +246,8 @@ $I18N = @{
         TreeNotices = "├── [NOTICES]    legal/THIRD_PARTY_NOTICES.md (atribuicoes Go/npm)"
         TreeDonate = "├── [APOIO]      legal/DONATE.md (canais de contribuicao)"
         TreeUninst = "└── [CONTROLE]   uninstall.ps1 (desinstalador local)"
-        DonateHeader = "☕ APOIE O DESENVOLVIMENTO INDEPENDENTE (DOACOES):"
-        DonateKofi = "• Ko-fi direto : https://ko-fi.com/dorado44"
-        DonateUSDC = "• USDC / Crypto: Consulte enderecos em '$InstallDir\legal\DONATE.md'"
+        DonateHeader = "☕ APOIE O DESENVOLVIMENTO INDEPENDENTE (KO-FI):"
+        DonateKofi = "• Ko-fi : https://ko-fi.com/dorado44"
         TipsHeader = "DICAS OPERACIONAIS E DIRETRIZES DE IA:"
         Tip1 = "[Supervisao de IA] O Goulm utiliza modelos de IA avancados. Sempre revise comandos sugeridos antes de aprovar alteracoes."
         Tip2 = "[Seguranca] Suas chaves de API sao protegidas localmente com criptografia AES-256-GCM / DPAPI."
@@ -390,11 +387,16 @@ function Assert-LicenseAccepted {
             $accepted = $true
         } elseif ($choice -match '^[vV]$') {
             Write-Host "`n--- [LEGAL / LICENSE] ---" -ForegroundColor DarkCyan
+            $licTargetFile = switch ($Lang) {
+                "en" { "LICENSE_EN.md" }
+                "pt" { "LICENSE_PT.md" }
+                default { "LICENSE" }
+            }
             try {
-                $rawLic = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/$Repo/main/legal/LICENSE" -Headers @{"User-Agent"="Goulm-Installer"} -TimeoutSec 5)
+                $rawLic = (Invoke-RestMethod -Uri "https://raw.githubusercontent.com/$Repo/main/legal/$licTargetFile" -Headers @{"User-Agent"="Goulm-Installer"} -TimeoutSec 5)
                 Write-Host $rawLic -ForegroundColor DarkGray
             } catch {
-                Write-Host "Consulta el texto completo en: https://github.com/$Repo/blob/main/legal/LICENSE" -ForegroundColor Yellow
+                Write-Host "Ver texto completo en: https://github.com/$Repo/blob/main/legal/$licTargetFile" -ForegroundColor Yellow
             }
             Write-Host "-------------------------`n" -ForegroundColor DarkCyan
         } else {
@@ -668,7 +670,6 @@ Write-Host "   $($T.TreeUninst)" -ForegroundColor Gray
 Write-Host ""
 Write-Host " $($T.DonateHeader)" -ForegroundColor Yellow
 Write-Host "   $($T.DonateKofi)" -ForegroundColor Cyan
-Write-Host "   $($T.DonateUSDC)" -ForegroundColor DarkGray
 Write-Host ""
 Write-Host " $($T.TipsHeader)" -ForegroundColor Yellow
 Write-Host "   💡 $($T.Tip1)" -ForegroundColor Gray
